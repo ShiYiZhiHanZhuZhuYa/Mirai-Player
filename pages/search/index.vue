@@ -8,53 +8,82 @@ const state = reactive({
     list: [],
     kw: "",
     currentTabIndex: 0,
-    songData: []
+    songData: [],
+    songList: [],
+    albumList: [],
+    mvList: []
 })
 const {
     list,
     kw,
     currentTabIndex,
-    songData
+    songData,
+    songList,
+    albumList,
+    mvList
 } = toRefs(state)
 const tabsData = [
     {
         text: '歌曲',
+        type: 1,
     },
     {
         text: '歌单',
+        type: 1000,
     },
     {
         text: '专辑',
+        type: 10,
     },
     {
         text: 'MV',
+        type: 1006,
     },
 ]
-function tabsChange(params) {
-
+function tabsChange(idx) {
+    console.log(idx);
+    confirm(tabsData[idx].type)
 }
-async function confirm() {
+async function confirm(type = 1) {
     // 存入输入的内容
     globalstore.setHistorcontent(state.kw)
     // 加载歌曲
     const res = await uni.$kmir.http.request({
         url: "cloudsearch",
         data: {
-            keywords: state.kw
+            keywords: state.kw,
+            type
         }
     })
-    state.songData = res.data.result.songs.map(item => {
-        const names = item.ar.map(subItem => subItem.name).join(',');
-        return {
-            cover: item.al.picUrl,
-            title: item.name,
-            singer: names,
-            album: item.al.name,
-            time: item.dt,
-            id: item.id,
-            mv: item.mv
-        }
-    })
+    switch (type) {
+        case 1:
+            state.songData = res.data.result.songs.map(item => {
+                const names = item.ar.map(subItem => subItem.name).join(',');
+                return {
+                    cover: item.al.picUrl,
+                    title: item.name,
+                    singer: names,
+                    album: item.al.name,
+                    time: item.dt,
+                    id: item.id,
+                    mv: item.mv
+                }
+            })
+            break;
+        case 1000:
+            state.songList = res.data.result.playlists
+            break;
+        case 10:
+            state.albumList = res.data.result.albums
+            break;
+        case 1006:
+            state.mvList = res.data.result.songs
+            break;
+
+        default:
+            break;
+    }
+
 }
 async function playerMusic(params) {
     const isExisting = playerstore.songs.findIndex(item => item.id == params.id)
@@ -73,17 +102,20 @@ async function playerMusic(params) {
             id: params.id,
             mv: params.mv,
         })
-        console.log(playerstore.songs);
-        playerstore.currentIndex = playerstore.songs.length - 1
-        playerstore.player.src = playerstore.songs[playerstore.currentIndex].src
-        playerstore.player.play();
-
+        playerstore.player.src = playerstore.songs[playerstore.songs.length - 1].src;
+        playerstore.currentIndex = playerstore.songs.length - 1;
+        nextTick(() => {
+            playerstore.player.play();
+        })
     }
-} function navigate(params) {
+}
+
+function navigate(params) {
     uni.navigateTo({
         url: "/pages/" + params
     })
 }
+
 function taphisto(params) {
     state.kw = params;
     confirm()
@@ -110,7 +142,7 @@ function taphisto(params) {
                 }}</tn-tag>
         </div>
         <!-- 搜索结果 -->
-        <div class="searchResult tn-pt-sm tn-pb-sm">
+        <div class="searchResult tn-pt-sm tn-pb-sm" v-show="kw">
             <tn-tabs @change="tabsChange" bg-color="" v-model="currentTabIndex">
                 <tn-tabs-item v-for="(item, index) in tabsData" :key="index" :title="item.text" />
             </tn-tabs>
@@ -132,28 +164,43 @@ function taphisto(params) {
             </div>
             <!-- 歌单 -->
             <div class="List tn-mt-xs" v-show="currentTabIndex == 1">
-                <div class="ListItem tn-mb-sm">
+                <div class="ListItem tn-mb-sm" v-for="item in songList" :key="item.id" @click="playerMusic(item)">
                     <div class="songcover">
-                        <tn-avatar shape="square"
-                            url="https://p2.music.126.net/V08nc-ELfydt4e7953pL8A==/109951165007678317.jpg" />
+                        <tn-avatar shape="square" :url="item.coverImgUrl + '?param=40y40'" />
                     </div>
                     <div class="title tn-mr-xs tn-ml-xs">
-                        <text class="tn-text-lg">SunFlower</text>
-                        <text class="tn-text-xs des tn-text-ellipsis-1">我是副标题副标副标副标副标副标副副标副标副标副标副标标副标副标</text>
+                        <text class="tn-text-lg">{{ item.name }}</text>
+                        <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.description }}</text>
                     </div>
                     <div>
                         <tn-icon name="video" size="40" class="des tn-mr-xs" />
                         <tn-icon name="more-horizontal" size="40" class="des" />
                     </div>
                 </div>
-                <div class="ListItem tn-mb-sm">
+            </div>
+            <div class="List tn-mt-xs" v-show="currentTabIndex == 2">
+                <div class="ListItem tn-mb-sm" v-for="item in albumList" :key="item.id" @click="playerMusic(item)">
                     <div class="songcover">
-                        <tn-avatar shape="square"
-                            url="https://p2.music.126.net/V08nc-ELfydt4e7953pL8A==/109951165007678317.jpg" />
+                        <tn-avatar shape="square" :url="item.blurPicUrl + '?param=40y40'" />
                     </div>
                     <div class="title tn-mr-xs tn-ml-xs">
-                        <text class="tn-text-lg">SunFlower</text>
-                        <text class="tn-text-xs des tn-text-ellipsis-1">我是副标题副标副标副标副标副标副副标副标副标副标副标标副标副标</text>
+                        <text class="tn-text-lg">{{ item.name }}</text>
+                        <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.type }}</text>
+                    </div>
+                    <div>
+                        <tn-icon name="video" size="40" class="des tn-mr-xs" />
+                        <tn-icon name="more-horizontal" size="40" class="des" />
+                    </div>
+                </div>
+            </div>
+            <div class="List tn-mt-xs" v-show="currentTabIndex == 3">
+                <div class="ListItem tn-mb-sm" v-for="item in mvList" :key="item.id" @click="playerMusic(item)">
+                    <div class="songcover">
+                        <tn-avatar shape="square" :url="item.al.picUrl + '?param=40y40'" />
+                    </div>
+                    <div class="title tn-mr-xs tn-ml-xs">
+                        <text class="tn-text-lg">{{ item.name }}</text>
+                        <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.ar.map(item => item.name).join() }}</text>
                     </div>
                     <div>
                         <tn-icon name="video" size="40" class="des tn-mr-xs" />

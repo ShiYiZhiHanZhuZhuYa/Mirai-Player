@@ -4,47 +4,36 @@ import { getImageThemeColor } from "@/src/utils/ThemeColor";
 const playerstore = PlayerStore()
 const state = reactive({
     list: [],
-    isPlaying: false,
     sliderValue: 0,
     progress: 0,
     currentTime: 0,
     duration: 0,
-    animationPlayState: "paused",
-    coverThemeColor: "#E1F5F8"
 })
 const {
     list,
-    isPlaying,
     sliderValue,
     progress,
     currentTime,
     duration,
-    animationPlayState,
-    coverThemeColor
 } = toRefs(state)
 onMounted(() => {
     nextTick(() => {
         initPlayer()
         getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
-            state.coverThemeColor = retRGBColor
+            playerstore.songs[playerstore.currentIndex].coverThemeColor = retRGBColor
         })
     })
 })
 
 const Emits = defineEmits(['leftClick'])
-// watch(() => playerstore.currentIndex, () => {
-//     console.log("🚀 => file: player.vue:33 => playerstore.currentIndex:", playerstore.currentIndex)
-//     // 把歌曲封面的主题颜色存储起来，减少网络请求
-//     console.log(playerstore.songs[playerstore.currentIndex].theme);
-//     if (playerstore.songs[playerstore.currentIndex].theme) {
-//         state.coverThemeColor = retRGBColor
-//     } else {
-//         getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
-//             state.coverThemeColor = retRGBColor
-//             playerstore.songs[playerstore.currentIndex].theme = retRGBColor
-//         })
-//     }
-// })
+watch(() => playerstore.currentIndex, () => {
+    // 设置动态封面颜色
+    if (!playerstore.songs[playerstore.currentIndex].coverThemeColor) {
+        getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
+            playerstore.songs[playerstore.currentIndex].coverThemeColor = retRGBColor
+        })
+    }
+})
 function initPlayer() {
     // 侦听时间变化
     playerstore.player.onTimeUpdate(() => {
@@ -57,14 +46,15 @@ function initPlayer() {
     });
     // 侦听播放状态
     playerstore.player.onPlay(() => {
-        state.isPlaying = true
-        state.animationPlayState = "running"
-        console.log("播放中");
+        playerstore.isPlaying = true
+        playerstore.animationPlayState = "running"
+        console.log("音频播放事件");
     })
+
     playerstore.player.onPause(() => {
-        state.isPlaying = false
-        state.animationPlayState = "paused"
-        console.log("暂停中");
+        playerstore.isPlaying = false
+        playerstore.animationPlayState = "paused"
+        console.log("音频暂停事件");
     })
 
     playerstore.player.onEnded(() => {
@@ -73,26 +63,24 @@ function initPlayer() {
 
     playerstore.player.src = playerstore.songs[playerstore.currentIndex].src
 }
+// 播放方法
+function play() {
+    playerstore.isPlaying = true
+    playerstore.animationPlayState = "running"
+    nextTick(() => {
+        playerstore.player.play();
+    })
+}
+
 // 暂停方法
 function pause() {
-    state.isPlaying = false
-    state.animationPlayState = "paused"
+    playerstore.isPlaying = false
+    playerstore.animationPlayState = "paused"
     playerstore.player.pause();
 }
 
-// 播放方法
-function play() {
-    getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
-        state.coverThemeColor = retRGBColor
-        console.log(retRGBColor);
-    })
-    state.isPlaying = true
-    state.animationPlayState = "running"
-    playerstore.player.play();
-}
-
 function togglePlay() {
-    if (state.isPlaying) {
+    if (playerstore.isPlaying) {
         pause()
     } else {
         play()
@@ -105,11 +93,10 @@ function playNext() {
     } else {
         playerstore.currentIndex++
     }
-    getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
-        state.coverThemeColor = retRGBColor
-    })
     playerstore.player.src = playerstore.songs[playerstore.currentIndex].src;
-    playerstore.player.play();
+    nextTick(() => {
+        playerstore.player.play();
+    })
 }
 // 上一首
 function playPrev() {
@@ -118,11 +105,10 @@ function playPrev() {
     } else {
         playerstore.currentIndex--
     }
-    getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
-        state.coverThemeColor = retRGBColor
-    })
     playerstore.player.src = playerstore.songs[playerstore.currentIndex].src;
-    playerstore.player.play();
+    nextTick(() => {
+        playerstore.player.play();
+    })
 }
 
 // 格式化时间
@@ -145,7 +131,8 @@ function leftClick() {
 }
 </script>
 <template>
-    <div class="container" :style="{ 'background': `linear-gradient(${coverThemeColor} 0%,#EEF2F8 50%, #EDF4FC 100%` }">
+    <div class="container"
+        :style="{ 'background': `linear-gradient(${playerstore.songs[playerstore.currentIndex].coverThemeColor} 0%,#EEF2F8 50%, #EDF4FC 100%` }">
         <!-- 规避头部的距离 -->
         <div style=" padding-top: var(--status-bar-height);"></div>
         <canvas id="getImageThemeColorCanvas" canvas-id="getImageThemeColorCanvas" style="position: absolute;
@@ -167,7 +154,7 @@ function leftClick() {
         <!-- 封面 -->
         <div class="content">
             <div class="cover">
-                <image class="image rotate" :style="{ animationPlayState: animationPlayState }"
+                <image class="image rotate" :style="{ animationPlayState: playerstore.animationPlayState }"
                     :src="playerstore.songs[playerstore.currentIndex].cover" mode="aspectFill" />
             </div>
         </div>
@@ -185,14 +172,14 @@ function leftClick() {
                 <tn-slider @change="changeProgress" v-model="progress" :min="0" :max="100" />
                 <div class="time des">
                     <text>{{ formatTime(currentTime) }}</text>
-                    <text> {{ formatTime(duration) }}</text>
+                    <text>{{ formatTime(duration) }}</text>
                 </div>
                 <div class="btn">
                     <div class="by">
                         <tn-icon size="49" name="previous-song-fill" @click="playNext" />
                     </div>
                     <div class="by" style="width: 5em;height: 5em;">
-                        <tn-icon size="60" :name="isPlaying ? 'stop' : 'play-fill'" @click="togglePlay" />
+                        <tn-icon size="60" :name="playerstore.isPlaying ? 'stop' : 'play-fill'" @click="togglePlay" />
                     </div>
                     <div class="by">
                         <tn-icon size="49" name="next-song-fill" @click="playPrev" />
@@ -202,7 +189,9 @@ function leftClick() {
             </view>
             <div class="review">
                 <tn-icon size="45" name="menu" />
-                <text class="des ">0评论<tn-icon class="tn-ml-xs" size="20" name="up-double" /> </text>
+                <div class="des">
+                    <text>0评论 </text><tn-icon class="tn-ml-xs" size="20" name="up-double" />
+                </div>
                 <tn-icon size="45" name="align" />
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { defineStore, createPinia } from "pinia";
 
-// AuthStore
+// PlayerStore
+import { getImageThemeColor } from "@/src/utils/ThemeColor";
 export const PlayerStore = defineStore({
     id: "PlayerState",
     state: () => ({
@@ -15,17 +16,16 @@ export const PlayerStore = defineStore({
         currentIndex: 0,
         // 播放器
         player: uni.createInnerAudioContext(),
+        // 播放状态
+        isPlaying: false,
+        // 封面动画状态
+        animationPlayState: "paused"
     }),
 
     actions: {
-        // setMenus
-        async getMenus(name) {
-            const { data } = await menu({ name });
-            this.authMenuList = data;
-        },
         updateSongs(param) {
             this.songs[this.currentIndex] = Object.assign(this.songs[this.currentIndex], { ...param })
-        }
+        },
     },
     // 开启数据缓存
     //   persist: {

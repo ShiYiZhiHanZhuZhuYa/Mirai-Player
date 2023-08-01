@@ -22,7 +22,7 @@ export const GlobalStore = defineStore({
             // 底部导航栏索引
             navIdx: 0,
             // 搜索内容历史
-            historcontent: []
+            historcontent: ['千板']
         }
     },
     // 方法
@@ -32,12 +32,14 @@ export const GlobalStore = defineStore({
             this.msg = "哈哈哈"
         },
         setHistorcontent(kw) {
-            if (!this.historcontent.includes(kw)) {
-                if (this.historcontent.length >= 6) {
-                    this.historcontent.pop();
-                    this.historcontent.unshift(kw)
-                } else {
-                    this.historcontent.unshift(kw)
+            if (kw != "") {
+                if (!this.historcontent.includes(kw)) {
+                    if (this.historcontent.length >= 6) {
+                        this.historcontent.pop();
+                        this.historcontent.unshift(kw)
+                    } else {
+                        this.historcontent.unshift(kw)
+                    }
                 }
             }
         }
