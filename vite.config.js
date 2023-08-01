@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 
 const resolve = (dir) => path.join(__dirname, dir)
 export default defineConfig({
+  base: "./",
   plugins: [,
     AutoImport({
       imports: ["vue", "vue-router"], // 自动导入vue和vue-router相关函数
