@@ -1,0 +1,124 @@
+.swiper-container {
+  width: 100%;
+  height: 300rpx;
+
+  .swiper-data {
+    width: 100%;
+    height: 100%;
+    border-radius: 30rpx;
+
+    .image {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+    }
+  }
+}
+
+.popup-example-custom-overlay {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.popup-example-block {
+  padding: 20px 24px;
+  width: 250px;
+}
+
+.popular {
+  margin-top: 20px;
+
+  &-item {
+    width: 100%;
+    height: 70px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    margin: 0 0 var(--space-size-large-y) 0;
+  }
+
+  &-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .info {
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 100%;
+
+    .title {
+      font-size: var(--font-size-md);
+    }
+
+    .des {
+      font-size: var(--font-size-xs);
+      color: var(--text-color-placeholder);
+    }
+  }
+}
+
+.songlist {
+  margin-top: 10px;
+
+  .songlist-item {
+    margin-right: 10px;
+  }
+
+  .songbox {
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .title {
+    font-size: var(--font-size-md);
+  }
+
+  .des {
+    font-size: var(--font-size-xs);
+    color: var(--text-color-placeholder);
+  }
+}
+.container {
+  padding: 20px;
+}
+.btn-icon{
+  margin-top: 30px;
+}
+.app {
+  // background: linear-gradient(1deg, #fff, #bfb4ff);
+  // height: 20vh;
+
+  &__border {
+    width: 35px;
+    height: 35px;
+    padding: 3px;
+    border: 1px solid rgba(113 119 144 / 25%);
+    border-radius: 50%;
+  }
+
+  &__bar {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    font-size: var(--app-bar-font-size);
+    color: #2a2e32;
+    transition: background-color 0.25s;
+
+    &__content {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    &__toolbar {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: var(--app-bar-height);
+    }
+  }
+}

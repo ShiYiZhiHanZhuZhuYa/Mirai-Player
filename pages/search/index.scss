@@ -1,0 +1,47 @@
+.container {
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    // justify-content: center;
+    align-items: center;
+}
+
+// 最近搜索
+.Recentsearch {}
+
+// 搜索结果
+.searchResult {}
+
+.List {
+    .ListItem {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        .title {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+.des {
+    color: var(--tn-text-color-placeholder);
+}
+
+.songcover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ipt {
+    border-radius: 20px;
+    background-color: #EBF4FA;
+    border: none;
+}

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "pinia": "^2.0.22",
+    "unplugin-auto-import": "^0.16.6"
+  }
+}
