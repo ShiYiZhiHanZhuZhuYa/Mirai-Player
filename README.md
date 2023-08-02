@@ -138,21 +138,9 @@ package.json
 * 配置不正常的话 打包会有奇怪的错误 
 * 在dist 目录执行 npm start 看看效果 👇
 * 效果出来了 我们就进行下一步 安装electron-builder  在dist目录安装 终端运行 `npm install electron-builder --save-dev` 
-* 在终端执行`npm run dist`即可打包 打包完成后就可以在dist文件夹下的build 找到exe点击 就能启动应用了😀
+* 在终端执行`npm run dist`即可打包 打包完成后就可以在dist文件夹下的build 找到进入win文件夹点击exe程序 就能启动应用了
+* 实在不行的话 包也打出来了 就在release里
  
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### QQ交流群 👨‍👨‍👦‍👦
 
 ![1686722147442](image/README/1686722147442.png)
