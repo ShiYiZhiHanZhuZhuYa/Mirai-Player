@@ -1,23 +1,35 @@
 <script setup>
 import { reactive, toRefs } from "vue";
+import { banner, newMusic, songPlaylist } from "@/api/api";
+import { btnList } from "./btnlist";
 const state = reactive({
   list: [],
   msg: "123456",
-  currentSwiperIndex: 0
+  currentSwiperIndex: 0,
+  // 轮播图数据
+  bannerList: [],
+  // 流行音乐
+  popMusic: [],
+  // 歌单
+  songList: []
 })
 const {
   list,
   msg,
-  currentSwiperIndex
+  currentSwiperIndex,
+  bannerList,
+  popMusic,
+  songList
 } = toRefs(state)
-// 轮播图数据
-const swiperData = [
-  'https://resource.tuniaokj.com/images/xiongjie/xiong-3d-2.jpg',
-  'https://resource.tuniaokj.com/images/xiongjie/xiong-3d-new.jpg',
-  'https://resource.tuniaokj.com/images/xiongjie/xiong-3d-new1.png',
-  'https://resource.tuniaokj.com/images/xiongjie/xiong-3d.jpg',
-  'https://resource.tuniaokj.com/images/xiongjie/x14.jpg',
-]
+
+onMounted(async () => {
+  const { data } = await banner()
+  const newMs = await newMusic();
+  const songList = await songPlaylist({ limit: 10, offset: 20 });
+  state.bannerList = data.banners
+  state.popMusic = newMs.data.result
+  state.songList = songList.data.playlists
+})
 function navigate(params) {
   uni.navigateTo({
     url: "/pages/" + params
@@ -41,13 +53,14 @@ function navigate(params) {
         </div>
       </div>
     </div>
+
     <div class="container">
       <div class="swiper-container">
-        <tn-swiper autoplay v-model="currentSwiperIndex" indicator indicator-type="dot" :data="swiperData" width="100%"
+        <tn-swiper autoplay v-model="currentSwiperIndex" indicator indicator-type="dot" :data="bannerList" width="100%"
           height="300">
           <template #default="{ data }">
             <view class="swiper-data">
-              <image class="image" :src="data" mode="aspectFill" />
+              <image class="image" :src="data.pic" mode="aspectFill" />
             </view>
           </template>
         </tn-swiper>
@@ -55,95 +68,44 @@ function navigate(params) {
 
       <div class="btn-icon">
         <div class="tn-flex-row" style="justify-content: space-between;">
-          <div class="btn-icon-item tn-flex-column">
-            <tn-icon type="primary" name="music-fill" size="35" />
+          <div class="btn-icon-item tn-flex-column" v-for="item in btnList" :key="item.id">
+            <tn-icon type="primary" :name="item.icon" size="35" />
             <text class="smspan">
-              每日推荐
-            </text>
-          </div>
-          <div class="btn-icon-item tn-flex-column">
-            <tn-icon type="primary" name="music-fill" size="35" />
-            <text class="smspan">
-              每日推荐
-            </text>
-          </div>
-          <div class="btn-icon-item tn-flex-column">
-            <tn-icon type="primary" name="music-fill" size="35" />
-            <text class="smspan">
-              每日推荐
-            </text>
-          </div>
-          <div class="btn-icon-item tn-flex-column">
-            <tn-icon type="primary" name="music-fill" size="35" />
-            <text class="smspan">
-              每日推荐
+              {{ item.title }}
             </text>
           </div>
         </div>
       </div>
-      <div class="popular">
-        <div class="popular-title">流行音乐</div>
-        <div class="popular-item">
-          <div class="avatar">
-            <tn-avatar shape="square" size="120" url="https://varlet.gitee.io/varlet-ui/cat.jpg" />
-          </div>
-          <div class="info">
-            <div class="title">我是歌曲标题</div>
-            <div class="des">我是副标题</div>
-          </div>
-        </div>
-        <div class="popular-item">
-          <div class="avatar">
-            <tn-avatar shape="square" size="120" url="https://varlet.gitee.io/varlet-ui/cat.jpg" />
-          </div>
-          <div class="info">
-            <div class="title">我是歌曲标题</div>
-            <div class="des">我是副标题</div>
-          </div>
-        </div>
 
-      </div>
       <div class="songlist">
         <div class="songlist-title">歌单</div>
-        <div class="songbox">
-          <div class="songlist-item">
-            <div class="avatar">
-              <tn-avatar shape="square" size="120" url="https://varlet.gitee.io/varlet-ui/cat.jpg" />
-            </div>
-            <div class="info">
-              <div class="title">我是歌曲标题</div>
-              <div class="des">我是副标题</div>
-            </div>
-          </div>
-          <div class="songlist-item">
-            <div class="avatar">
-              <tn-avatar shape="square" size="120" url="https://varlet.gitee.io/varlet-ui/cat.jpg" />
-            </div>
-            <div class="info">
-              <div class="title">我是歌曲标题</div>
-              <div class="des">我是副标题</div>
+        <tn-scroll-list>
+          <div class="songbox">
+            <div class="songlist-item" v-for="item in songList" :key="item.id">
+              <div class="avatar">
+                <tn-avatar shape="square" size="130" :url="item.coverImgUrl + '?param=70y70'" />
+              </div>
+              <div class="info">
+                <div class="title tn-text-ellipsis-2">{{ item.name }}</div>
+              </div>
             </div>
           </div>
-          <div class="songlist-item">
-            <div class="avatar">
-              <tn-avatar shape="square" size="120" url="https://varlet.gitee.io/varlet-ui/cat.jpg" />
-            </div>
-            <div class="info">
-              <div class="title">我是歌曲标题</div>
-              <div class="des">我是副标题</div>
-            </div>
+        </tn-scroll-list>
+      </div>
+
+      <div class="popular">
+        <div class="popular-title">流行音乐</div>
+        <div class="popular-item" v-for="item in popMusic" :key="item.id">
+          <div class="avatar">
+            <tn-avatar shape="square" size="130" :url="item.picUrl + '?param=70y70'" />
           </div>
-          <div class="songlist-item">
-            <div class="avatar">
-              <tn-avatar shape="square" size="120" url="https://varlet.gitee.io/varlet-ui/cat.jpg" />
-            </div>
-            <div class="info">
-              <div class="title">我是歌曲标题</div>
-              <div class="des">我是副标题</div>
-            </div>
+          <div class="info">
+            <div class="title">{{ item.name }}</div>
+            <div class="des tn-text-ellipsis-2">{{ item.song.artists.map(item => item.name).join() }}</div>
           </div>
         </div>
       </div>
+
     </div>
     <yxcr-nav></yxcr-nav>
   </div>

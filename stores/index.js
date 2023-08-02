@@ -22,7 +22,8 @@ export const GlobalStore = defineStore({
             // 底部导航栏索引
             navIdx: 0,
             // 搜索内容历史
-            historcontent: ['千板']
+            historcontent: ['千板'],
+            currentTabbar: 0
         }
     },
     // 方法

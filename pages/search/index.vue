@@ -1,7 +1,7 @@
 <script setup>
 import { GlobalStore } from "@/stores/index";
 import { PlayerStore } from "@/stores/modules/player";
-import { songUrl } from "@/api/api";
+import { songUrl, cloudsearch } from "@/api/api";
 const playerstore = PlayerStore()
 const globalstore = GlobalStore()
 const state = reactive({
@@ -48,13 +48,7 @@ async function confirm(type = 1) {
     // 存入输入的内容
     globalstore.setHistorcontent(state.kw)
     // 加载歌曲
-    const res = await uni.$kmir.http.request({
-        url: "cloudsearch",
-        data: {
-            keywords: state.kw,
-            type
-        }
-    })
+    const res = await cloudsearch({ keywords: state.kw, type })
     switch (type) {
         case 1:
             state.songData = res.data.result.songs.map(item => {
@@ -130,7 +124,9 @@ function taphisto(params) {
                     <tn-icon name="search" size="40" class="des" />
                 </template>
             </tn-input>
-            <div class="tn-ml-xs"><tn-button type="primary" size="sm" @click="navigate('index/index')">取消</tn-button></div>
+            <div class="tn-ml-xs">
+                <tn-button type="primary" size="lg" @click="navigate('index/index')">取消</tn-button>
+            </div>
         </div>
         <!-- 最近搜索 -->
         <div class="Recentsearch">

@@ -14,7 +14,6 @@ const { ns, popupContentClass, popupContentStyle } = usePopupCustomStyle(props)
 
 <template>
   <view
-  style="padding-top: var(--status-bar-height)"
     :class="[ns.b(), ns.is('show', modelValue)]"
     :style="{
       zIndex,
@@ -29,12 +28,11 @@ const { ns, popupContentClass, popupContentStyle } = usePopupCustomStyle(props)
     />
 
     <!-- 弹框内容 -->
-    <view :class="[popupContentClass]" :style="popupContentStyle" >
-
+    <view :class="[popupContentClass]" :style="popupContentStyle">
       <slot />
+
       <!-- 关闭按钮 -->
       <view
-      style="padding-top: var(--status-bar-height)"
         v-if="closeBtn"
         :class="[ns.e('close-btn'), ns.em('close-btn', closeBtnPosition)]"
         @tap.stop="onClickCloseBtn"
@@ -43,7 +41,6 @@ const { ns, popupContentClass, popupContentStyle } = usePopupCustomStyle(props)
           <TnIcon name="close" />
         </slot>
       </view>
-
     </view>
   </view>
 </template>

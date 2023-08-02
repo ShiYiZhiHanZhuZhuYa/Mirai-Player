@@ -52,7 +52,7 @@ export const useWaterFall = (props: WaterFallProps) => {
       nextTick(() => {
         setTimeout(() => {
           splitData(data)
-        }, 80)
+        }, 200)
       })
     } else if (props.mode === 'normal') {
       // 判断当前的第一个元素是放在左边还是右边
@@ -83,12 +83,31 @@ export const useWaterFall = (props: WaterFallProps) => {
     }
   }
 
+  // 重新渲染列表
+  const resetWaterFall = () => {
+    if (!props.data) return
+    leftData.value = []
+    rightData.value = []
+    leftContainerHeight = 0
+    rightContainerHeight = 0
+    nextTick(() => {
+      oldUserData = props.data
+      splitData(props.data)
+    })
+  }
+
   watch(
     () => props.data,
     (val) => {
-      if (!val || !val.length) return
+      if (!val) return
       if (oldUserData.length === val.length) return
       const newData = cloneDeep(val.slice(oldUserData.length))
+      if (!newData.length) {
+        leftData.value = []
+        rightData.value = []
+        leftContainerHeight = 0
+        rightContainerHeight = 0
+      }
       nextTick(() => {
         oldUserData = val
         splitData(newData)
@@ -103,5 +122,6 @@ export const useWaterFall = (props: WaterFallProps) => {
     componentId,
     leftData,
     rightData,
+    resetWaterFall,
   }
 }

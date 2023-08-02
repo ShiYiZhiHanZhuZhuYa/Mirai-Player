@@ -1,12 +1,11 @@
-## 1.0.6（2023-07-17）
-- 新增`TnSwiper`组件
-- `TnImageUpload`组件新增`auto-remove-faild-file`属性，当上传失败时是否自动移除文件
-- 修复`TnLazyLoad`有默认背景，在现在透明图片时带了背景颜色的问题
-- 修复`TnRate`在一定条件下会返回Nan的问题
-- 修复`TnRate`配合`TnPopup`会获取容器信息失效的问题
-- 修复`TnNumberBox`在disabled状态下能点击的问题
-- 修复`TnNumberBox`在输入模式下输入的值大于最大值时回显失败的问题
-- 修复`TnDateTimePicker`在`time`下默认值不滚动到对应位置的问题
-- 修复`TnSearchBox` v-model 无法更新内部值的问题
-- 修复`TnSearchBox` 在内容为空时点击search无法触发事件的问题
-- 修复`TnEmpty`在自定义内容时无法正常显示的问题
+## 1.0.8（2023-07-27）
+- `TnWaterFall`新增`reset`方法重置列表
+- `TnGraphicCard`组件新增`more-click`事件
+- `TnGraphicCard`组件事件名称统一修改为`-`连接，`avatarClick`->`avatar-click` \ `viewClick` -> `view-click` \ `commentClick` -> `comment-click` \ `likeClick` -> `like-click`
+- 修复`TnWaterFall`在`data`为空时没有重置列表的问题
+- 修复`TnInput`在textarea模式下无法设置自动高度和指定高度的问题
+- 修复`TnTabbar`在元素少于5个时凸起按钮无法正常显示的问题
+- 修复`TnDateTimePicker`和`TnRegionPicker`部分参数无效的问题
+- 优化`TnCollapse`点击内容时阻止收起事件
+- 优化`TnBubbleBox`样式
+- 优化部分hooks的处理逻辑

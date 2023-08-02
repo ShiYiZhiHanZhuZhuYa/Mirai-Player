@@ -23,7 +23,7 @@ export const useTabsCustomStyle = (props: TabsProps) => {
     const cls: string[] = [ns.b()]
 
     // 设置底部阴影
-    // if (props.bottomShadow) cls.push(ns.m('bottom-shadow'))
+    if (props.bottomShadow) cls.push(ns.m('bottom-shadow'))
 
     // 设置背景颜色
     if (bgColorClass.value) cls.push(bgColorClass.value)
@@ -36,8 +36,7 @@ export const useTabsCustomStyle = (props: TabsProps) => {
 
     // 设置背景颜色
     if (!bgColorClass.value) {
-      // style.backgroundColor = bgColorStyle.value || 'var(--tn-color-white)'
-      style.backgroundColor = bgColorStyle.value
+      style.backgroundColor = bgColorStyle.value || 'var(--tn-color-white)'
     }
 
     // 设置高度
