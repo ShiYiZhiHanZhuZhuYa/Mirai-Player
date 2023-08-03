@@ -37,7 +37,7 @@ function navigate(params) {
 }
 </script>
 <template>
-  <div class="app">
+  <div class="app page-container">
     <div class="app__bar">
       <div class="app__bar__toolbar">
         <div class="app__bar__content">
@@ -46,7 +46,7 @@ function navigate(params) {
               <tn-icon name="search" size="40" @click="navigate('search/index')" />
             </div>
           </div>
-          <div>Home</div>
+          <text class="tn-text-lg">Home</text>
           <div class="app__border">
             <tn-avatar size="100%" url="https://resource.tuniaokj.com/images/avatar/test_avatar.jpg" />
           </div>
@@ -55,19 +55,23 @@ function navigate(params) {
     </div>
 
     <div class="container">
-      <div class="swiper-container">
-        <tn-swiper autoplay v-model="currentSwiperIndex" indicator indicator-type="dot" :data="bannerList" width="100%"
-          height="300">
-          <template #default="{ data }">
-            <view class="swiper-data">
-              <image class="image" :src="data.pic" mode="aspectFill" />
-            </view>
-          </template>
-        </tn-swiper>
+      <div class="swiper-item">
+        <div class="swiper-wrapper tn-shadow-md">
+          <tn-swiper autoplay v-model="currentSwiperIndex" indicator indicator-type="dot" :data="bannerList" width="100%"
+            height="300">
+            <template #default="{ data }">
+              <view class="swiper-data">
+                <image class="image" :src="data.pic" mode="aspectFill" />
+              </view>
+            </template>
+          </tn-swiper>
+        </div>
       </div>
 
+
       <div class="btn-icon">
-        <div class="tn-flex-row" style="justify-content: space-between;">
+        <div class="tn-flex-row tn-p tn-shadow-md yxbr-10"
+          style="justify-content: space-between;background-color: #F6F9FE;">
           <div class="btn-icon-item tn-flex-column" v-for="item in btnList" :key="item.id">
             <tn-icon type="primary" :name="item.icon" size="35" />
             <text class="smspan">
@@ -78,30 +82,28 @@ function navigate(params) {
       </div>
 
       <div class="songlist">
-        <div class="songlist-title">歌单</div>
-        <tn-scroll-list>
-          <div class="songbox">
-            <div class="songlist-item" v-for="item in songList" :key="item.id">
-              <div class="avatar">
-                <tn-avatar shape="square" size="130" :url="item.coverImgUrl + '?param=70y70'" />
-              </div>
-              <div class="info">
-                <div class="title tn-text-ellipsis-2">{{ item.name }}</div>
-              </div>
+        <text class="tn-text-lg songlist-title">歌单</text>
+        <div class="songbox">
+          <div class="songlist-item" v-for="item in songList" :key="item.id">
+            <div class="avatar">
+              <tn-avatar class="tn-shadow-md" shape="square" size="130" :url="item.coverImgUrl + '?param=70y70'" />
+            </div>
+            <div class="info">
+              <text class="title tn-text-ellipsis-2">{{ item.name }}</text>
             </div>
           </div>
-        </tn-scroll-list>
+        </div>
       </div>
 
       <div class="popular">
-        <div class="popular-title">流行音乐</div>
+        <text class="tn-text-lg popular-title">流行音乐</text>
         <div class="popular-item" v-for="item in popMusic" :key="item.id">
           <div class="avatar">
-            <tn-avatar shape="square" size="130" :url="item.picUrl + '?param=70y70'" />
+            <tn-avatar class="tn-shadow-md" shape="square" size="130" :url="item.picUrl + '?param=100y100'" />
           </div>
           <div class="info">
-            <div class="title">{{ item.name }}</div>
-            <div class="des tn-text-ellipsis-2">{{ item.song.artists.map(item => item.name).join() }}</div>
+            <text class="title">{{ item.name }}</text>
+            <text class="des tn-text-ellipsis-2">{{ item.song.artists.map(item => item.name).join() }}</text>
           </div>
         </div>
       </div>
@@ -111,7 +113,7 @@ function navigate(params) {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "./index.scss";
 
 // .aq {

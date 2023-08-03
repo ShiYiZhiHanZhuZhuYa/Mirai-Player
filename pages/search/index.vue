@@ -41,10 +41,9 @@ const tabsData = [
     },
 ]
 function tabsChange(idx) {
-    console.log(idx);
-    confirm(tabsData[idx].type)
+    confirm(state.kw, tabsData[idx].type)
 }
-async function confirm(type = 1) {
+async function confirm(kw, type = 1) {
     // 存入输入的内容
     globalstore.setHistorcontent(state.kw)
     // 加载歌曲
@@ -105,7 +104,7 @@ async function playerMusic(params) {
 }
 
 function navigate(params) {
-    uni.navigateTo({
+    uni.switchTab({
         url: "/pages/" + params
     })
 }
@@ -116,97 +115,99 @@ function taphisto(params) {
 }
 </script>
 <template>
-    <div class="container">
-        <div class="header">
-            <tn-input height="60" @confirm="confirm" clearable custom-class="ipt tn-shadow-md" v-model="kw" type="text"
-                placeholder="请输入歌曲">
-                <template #prefix>
-                    <tn-icon name="search" size="40" class="des" />
-                </template>
-            </tn-input>
-            <div class="tn-ml-xs">
-                <tn-button type="primary" size="lg" @click="navigate('index/index')">取消</tn-button>
-            </div>
-        </div>
-        <!-- 最近搜索 -->
-        <div class="Recentsearch">
-            <div class="tn-pt-sm tn-pb-sm">
-                <text>最近搜索</text>
-            </div>
-            <tn-tag v-for="(item, index) in globalstore.historcontent" @click="taphisto(item)" :key="index"
-                bg-color="#E6F3F9" text-color="#000" shape="round" class="tn-mr-sm tn-mb-sm tn-shadow-md">{{ item
-                }}</tn-tag>
-        </div>
-        <!-- 搜索结果 -->
-        <div class="searchResult tn-pt-sm tn-pb-sm" v-show="kw">
-            <tn-tabs @change="tabsChange" bg-color="" v-model="currentTabIndex">
-                <tn-tabs-item v-for="(item, index) in tabsData" :key="index" :title="item.text" />
-            </tn-tabs>
-            <!-- 歌曲 -->
-            <div class="List tn-mt-xs" v-show="currentTabIndex == 0">
-                <div class="ListItem tn-mb-sm" v-for="item in songData" :key="item.id" @click="playerMusic(item)">
-                    <div class="songcover">
-                        <tn-avatar shape="square" :url="item.cover + '?param=40y40'" />
-                    </div>
-                    <div class="title tn-mr-xs tn-ml-xs">
-                        <text class="tn-text-lg tn-text-ellipsis-1">{{ item.title }}</text>
-                        <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.album }}</text>
-                    </div>
-                    <div>
-                        <tn-icon name="video" size="40" class="des tn-mr-xs" />
-                        <tn-icon name="more-horizontal" size="40" class="des" />
-                    </div>
+    <div class="page-container">
+        <div class="container">
+            <div class="header">
+                <tn-input height="60" @confirm="confirm" clearable custom-class="ipt tn-shadow-md" v-model="kw" type="text"
+                    placeholder="请输入歌曲">
+                    <template #prefix>
+                        <tn-icon name="search" size="40" class="des" />
+                    </template>
+                </tn-input>
+                <div class="tn-ml-xs">
+                    <tn-button type="primary" size="lg" @click="navigate('index/index')">取消</tn-button>
                 </div>
             </div>
-            <!-- 歌单 -->
-            <div class="List tn-mt-xs" v-show="currentTabIndex == 1">
-                <div class="ListItem tn-mb-sm" v-for="item in songList" :key="item.id" @click="playerMusic(item)">
-                    <div class="songcover">
-                        <tn-avatar shape="square" :url="item.coverImgUrl + '?param=40y40'" />
-                    </div>
-                    <div class="title tn-mr-xs tn-ml-xs">
-                        <text class="tn-text-lg">{{ item.name }}</text>
-                        <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.description }}</text>
-                    </div>
-                    <div>
-                        <tn-icon name="video" size="40" class="des tn-mr-xs" />
-                        <tn-icon name="more-horizontal" size="40" class="des" />
+            <!-- 最近搜索 -->
+            <div class="Recentsearch">
+                <div class="tn-pt-sm tn-pb-sm">
+                    <text>最近搜索</text>
+                </div>
+                <tn-tag v-for="(item, index) in globalstore.historcontent" @click="taphisto(item)" :key="index"
+                    bg-color="#E6F3F9" text-color="#000" shape="round" class="yxbr-10 tn-mr-sm tn-mb-sm tn-shadow-md">{{
+                        item
+                    }}</tn-tag>
+            </div>
+            <!-- 搜索结果 -->
+            <div class="searchResult tn-pt-sm tn-pb-sm" v-show="kw">
+                <tn-tabs @change="tabsChange" bg-color="" v-model="currentTabIndex" class="yxbr-10">
+                    <tn-tabs-item v-for="(item, index) in tabsData" :key="index" :title="item.text" />
+                </tn-tabs>
+                <!-- 歌曲 -->
+                <div class="List tn-mt-xs" v-show="currentTabIndex == 0">
+                    <div class="ListItem tn-mb tn-mt" v-for="item in songData" :key="item.id" @click="playerMusic(item)">
+                        <div class="songcover">
+                            <tn-avatar shape="square" :url="item.cover + '?param=60y60'" />
+                        </div>
+                        <div class="title tn-mr-xs tn-ml-xs">
+                            <text class="tn-text-lg tn-text-ellipsis-1">{{ item.title }}</text>
+                            <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.album }}</text>
+                        </div>
+                        <div>
+                            <tn-icon name="video" size="40" class="des tn-mr-sm" />
+                            <tn-icon name="more-horizontal" size="40" class="des" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="List tn-mt-xs" v-show="currentTabIndex == 2">
-                <div class="ListItem tn-mb-sm" v-for="item in albumList" :key="item.id" @click="playerMusic(item)">
-                    <div class="songcover">
-                        <tn-avatar shape="square" :url="item.blurPicUrl + '?param=40y40'" />
-                    </div>
-                    <div class="title tn-mr-xs tn-ml-xs">
-                        <text class="tn-text-lg">{{ item.name }}</text>
-                        <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.type }}</text>
-                    </div>
-                    <div>
-                        <tn-icon name="video" size="40" class="des tn-mr-xs" />
-                        <tn-icon name="more-horizontal" size="40" class="des" />
+                <!-- 歌单 -->
+                <div class="List tn-mt-xs" v-show="currentTabIndex == 1">
+                    <div class="ListItem tn-mb-sm" v-for="item in songList" :key="item.id" @click="playerMusic(item)">
+                        <div class="songcover">
+                            <tn-avatar shape="square" :url="item.coverImgUrl + '?param=60y60'" />
+                        </div>
+                        <div class="title tn-mr-xs tn-ml-xs">
+                            <text class="tn-text-lg">{{ item.name }}</text>
+                            <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.description }}</text>
+                        </div>
+                        <div>
+                            <tn-icon name="video" size="40" class="des tn-mr-xs" />
+                            <tn-icon name="more-horizontal" size="40" class="des" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="List tn-mt-xs" v-show="currentTabIndex == 3">
-                <div class="ListItem tn-mb-sm" v-for="item in mvList" :key="item.id" @click="playerMusic(item)">
-                    <div class="songcover">
-                        <tn-avatar shape="square" :url="item.al.picUrl + '?param=40y40'" />
+                <div class="List tn-mt-xs" v-show="currentTabIndex == 2">
+                    <div class="ListItem tn-mb-sm" v-for="item in albumList" :key="item.id" @click="playerMusic(item)">
+                        <div class="songcover">
+                            <tn-avatar shape="square" :url="item.blurPicUrl + '?param=60y60'" />
+                        </div>
+                        <div class="title tn-mr-xs tn-ml-xs">
+                            <text class="tn-text-lg">{{ item.name }}</text>
+                            <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.type }}</text>
+                        </div>
+                        <div>
+                            <tn-icon name="video" size="40" class="des tn-mr-xs" />
+                            <tn-icon name="more-horizontal" size="40" class="des" />
+                        </div>
                     </div>
-                    <div class="title tn-mr-xs tn-ml-xs">
-                        <text class="tn-text-lg">{{ item.name }}</text>
-                        <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.ar.map(item => item.name).join() }}</text>
-                    </div>
-                    <div>
-                        <tn-icon name="video" size="40" class="des tn-mr-xs" />
-                        <tn-icon name="more-horizontal" size="40" class="des" />
+                </div>
+                <div class="List tn-mt-xs" v-show="currentTabIndex == 3">
+                    <div class="ListItem tn-mb-sm" v-for="item in mvList" :key="item.id" @click="playerMusic(item)">
+                        <div class="songcover">
+                            <tn-avatar shape="square" :url="item.al.picUrl + '?param=60y60'" />
+                        </div>
+                        <div class="title tn-mr-xs tn-ml-xs">
+                            <text class="tn-text-lg">{{ item.name }}</text>
+                            <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.ar.map(item => item.name).join()
+                            }}</text>
+                        </div>
+                        <div>
+                            <tn-icon name="video" size="40" class="des tn-mr-xs" />
+                            <tn-icon name="more-horizontal" size="40" class="des" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-<style lang='scss' scoped>
-@import './index.scss';
-</style>
+<style lang='scss' scoped>@import './index.scss';</style>

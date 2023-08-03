@@ -1,17 +1,26 @@
-.swiper-container {
+.swiper-item {
+  position: relative;
   width: 100%;
-  height: 300rpx;
+  height: 100%;
 
-  .swiper-data {
+  .swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 300rpx;
+    border-radius: 30rpx;
+    overflow: hidden;
+  }
+}
+
+.swiper-data {
+  width: 100%;
+  height: 100%;
+  border-radius: 30rpx;
+
+  .image {
     width: 100%;
     height: 100%;
-    border-radius: 30rpx;
-
-    .image {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-    }
+    border-radius: inherit;
   }
 }
 
@@ -37,8 +46,9 @@
   }
 
   &-title {
-    font-size: var(--font-size-md);
+    // font-size: var(--font-size-lg);
     padding: 10px 0;
+    display: block;
   }
 
   .info {
@@ -49,7 +59,7 @@
     height: 100%;
 
     .title {
-      font-size: var(--font-size-md);
+      font-size: var(--font-size-sm);
     }
 
     .des {
@@ -64,8 +74,8 @@
 
 
   &-title {
-    font-size: var(--font-size-md);
     padding: 10px 0;
+    display: block;
   }
 
   .songlist-item {
@@ -79,7 +89,7 @@
   }
 
   .title {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-sm);
   }
 
   .des {
@@ -90,6 +100,7 @@
 
 .container {
   padding: 20px;
+
 }
 
 .btn-icon {
@@ -97,8 +108,6 @@
 }
 
 .app {
-  // background: linear-gradient(1deg, #fff, #bfb4ff);
-  // height: 20vh;
 
   &__border {
     width: 35px;

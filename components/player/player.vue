@@ -18,7 +18,9 @@ const {
 } = toRefs(state)
 onMounted(() => {
     nextTick(() => {
+        // 初始化播放器
         initPlayer()
+        // 初始化动态封面颜色
         getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
             playerstore.songs[playerstore.currentIndex].coverThemeColor = retRGBColor
         })
@@ -57,10 +59,12 @@ function initPlayer() {
         console.log("音频暂停事件");
     })
 
+    // 歌曲结束自动下一首
     playerstore.player.onEnded(() => {
         playNext()
     })
 
+    // 默认选择第一首歌曲
     playerstore.player.src = playerstore.songs[playerstore.currentIndex].src
 }
 // 播放方法

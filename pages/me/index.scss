@@ -10,3 +10,39 @@
     border-radius: 10px;
     background-repeat: no-repeat;
 }
+
+.boxgrid {
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    justify-items: stretch;
+    align-items: stretch;
+
+    .colitem {
+        background-color: #FAFBFF;
+        padding: 10px;
+    }
+}
+
+.songlist {
+    display: grid;
+    grid-template-columns: auto;
+    // grid-template-rows: 1fr 1fr;
+    // grid-column-gap: 20px;
+    grid-row-gap: 5px;
+    justify-items: stretch;
+    align-items: stretch;
+
+    &-item {
+        // background-color: #FAFBFF;
+        padding: 5px 0;
+    }
+
+    
+}
+.des {
+    font-size: var(--font-size-xs);
+    color: var(--text-color-placeholder);
+}
