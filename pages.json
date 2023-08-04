@@ -13,6 +13,9 @@
 		},
 		{
 			"path": "pages/me/index"
+		},
+		{
+			"path": "pages/login/index"
 		}
 	],
 	"globalStyle": {

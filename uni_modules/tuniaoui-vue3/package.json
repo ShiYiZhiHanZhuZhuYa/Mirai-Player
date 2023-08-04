@@ -1,8 +1,8 @@
 {
   "id": "tuniaoui-vue3",
   "displayName": "图鸟UI vue3",
-  "version": "1.0.8",
-  "description": "图鸟UI vue3 uniapp版本 酷炫简洁UI 使用Typescrip进行开发，提供了丰富的组件进行快速开发，包含常用表单组件、信息展示组件等",
+  "version": "1.0.9",
+  "description": "图鸟UI[TuniaoUI] vue3 uniapp版本 酷炫简洁UI 使用Typescrip进行开发，提供了丰富的组件进行快速开发，包含常用表单组件、信息展示组件等",
   "keywords": [
     "图鸟",
     "tuniao",
@@ -65,7 +65,7 @@
         },
         "小程序": {
           "微信": "y",
-          "阿里": "u",
+          "阿里": "y",
           "百度": "u",
           "字节跳动": "u",
           "QQ": "u",

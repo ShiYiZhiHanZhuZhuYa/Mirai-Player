@@ -1,11 +1,13 @@
-## 1.0.8（2023-07-27）
-- `TnWaterFall`新增`reset`方法重置列表
-- `TnGraphicCard`组件新增`more-click`事件
-- `TnGraphicCard`组件事件名称统一修改为`-`连接，`avatarClick`->`avatar-click` \ `viewClick` -> `view-click` \ `commentClick` -> `comment-click` \ `likeClick` -> `like-click`
-- 修复`TnWaterFall`在`data`为空时没有重置列表的问题
-- 修复`TnInput`在textarea模式下无法设置自动高度和指定高度的问题
-- 修复`TnTabbar`在元素少于5个时凸起按钮无法正常显示的问题
-- 修复`TnDateTimePicker`和`TnRegionPicker`部分参数无效的问题
-- 优化`TnCollapse`点击内容时阻止收起事件
-- 优化`TnBubbleBox`样式
-- 优化部分hooks的处理逻辑
+## 1.0.9（2023-08-04）
+- 删除`TnGraphicCard`组件，以第三方组件的形式提供
+- `TnPicker` `change`和`confirm`事件新增返回传递的数据
+- `TnRegionPicker` `change`和`confirm`事件新增返回具体地区的数据
+- `TnSwiper`新增`previous-margin`和`next-margin`属性
+- `TnTabs`新增`active-bold`参数设置激活时是否加粗字体
+- 修复在部份情况下组件会编译到全局目录下的问题 <Badge type="info" text="感谢[ThinkAdmin]的排查" />
+- 修复`TnPicker`点击取消后值依旧发生改变的问题
+- 修复`TnTabbar`无法设置图标大小的问题
+- 修复`TnAvatarGroup`下的`TnAvatar`初始化失败的问题
+- 修复`TnButton` `border-color`无法设置为内置颜色外的其他颜色的问题
+- 修复`TnButton` `border-bold`无效的问题
+- 优化`TnPopup`弹出/隐藏动画

@@ -5,15 +5,20 @@ const state = reactive({
 const {
     list,
 } = toRefs(state)
-
+function routerLK(params) {
+    uni.navigateTo({
+        url: "/pages/login/index"
+    })
+}
 
 </script>
 <template>
     <div class="page-container">
         <div class="app">
             <div class="headbox tn-shadow-blur tn-flex items-center">
-                <div class="tn-flex items-center tn-ml-lg">
-                    <tn-avatar size="xl" url="https://resource.tuniaokj.com/images/avatar/test_avatar.jpg" />
+                <div class="userinfo tn-flex items-center tn-ml-lg" @click="routerLK">
+                    <tn-avatar size="xl" url="https://resource.tuniaokj.com/images/avatar/test_avatar.jpg"
+                        @click="routerLK" />
                     <text class="tn-text-3xl tn-ml-sm" style="color: #fff;">yxcr</text>
                 </div>
             </div>

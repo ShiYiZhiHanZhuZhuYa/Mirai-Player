@@ -74,7 +74,7 @@ function navigate(params) {
           style="justify-content: space-between;background-color: #F6F9FE;">
           <div class="btn-icon-item tn-flex-column" v-for="item in btnList" :key="item.id">
             <tn-icon type="primary" :name="item.icon" size="35" />
-            <text class="smspan">
+            <text class="tn-mt-xs">
               {{ item.title }}
             </text>
           </div>
@@ -86,10 +86,22 @@ function navigate(params) {
         <div class="songbox">
           <div class="songlist-item" v-for="item in songList" :key="item.id">
             <div class="avatar">
-              <tn-avatar class="tn-shadow-md" shape="square" size="130" :url="item.coverImgUrl + '?param=70y70'" />
+              <div class="overlay">
+                <div class="box">
+                  <div class="tn-flex tn-flex-column">
+                    <text class="list-title tn-text-xs tn-text-ellipsis-2">{{ item.name }}</text>
+                    <div class="tn-flex des">
+                      <tn-icon name="music-fill" color="#fff" size="30" />
+                      <text class="tn-ml-xs"> 12 首</text>
+                    </div>
+                  </div>
+                  <tn-icon name="video-fill" color="#fff" size="45" />
+                </div>
+              </div>
+              <tn-avatar class="tn-shadow-md" shape="square" size="300" :url="item.coverImgUrl + '?param=300y300'" />
             </div>
             <div class="info">
-              <text class="title tn-text-ellipsis-2">{{ item.name }}</text>
+
             </div>
           </div>
         </div>
@@ -102,8 +114,11 @@ function navigate(params) {
             <tn-avatar class="tn-shadow-md" shape="square" size="130" :url="item.picUrl + '?param=100y100'" />
           </div>
           <div class="info">
-            <text class="title">{{ item.name }}</text>
+            <text class="tn-text-sm">{{ item.name }}</text>
             <text class="des tn-text-ellipsis-2">{{ item.song.artists.map(item => item.name).join() }}</text>
+          </div>
+          <div class="tn-flex justify-end tn-flex-1 ">
+            <tn-icon name="more-vertical" color="#fff" size="45" />
           </div>
         </div>
       </div>

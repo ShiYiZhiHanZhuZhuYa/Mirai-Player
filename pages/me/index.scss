@@ -5,10 +5,14 @@
 .headbox {
     background-image: url("@/static/user_bg.jpeg");
     background-size: cover;
-    height: 150px;
+    height: 200px;
     // opacity: 0.9;
     border-radius: 10px;
     background-repeat: no-repeat;
+    position: relative;
+    .userinfo{
+        position: absolute;
+    }
 }
 
 .boxgrid {
