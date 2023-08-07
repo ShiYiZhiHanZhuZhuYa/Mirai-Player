@@ -130,13 +130,15 @@ function taphisto(params) {
             </div>
             <!-- 最近搜索 -->
             <div class="Recentsearch">
-                <div class="tn-pt-sm tn-pb-sm">
+                <div class=" tn-pt-sm tn-pb-sm">
                     <text>最近搜索</text>
                 </div>
-                <tn-tag v-for="(item, index) in globalstore.historcontent" @click="taphisto(item)" :key="index"
-                    bg-color="#E6F3F9" text-color="#000" shape="round" class="yxbr-10 tn-mr-sm tn-mb-sm tn-shadow-md">{{
-                        item
-                    }}</tn-tag>
+                <div class="rtsearch tn-shadow">
+                    <tn-tag v-for="(item, index) in globalstore.historcontent" @click="taphisto(item)" :key="index"
+                        bg-color="#E6F3F9" text-color="#000" shape="round" class="yxbr-10 tn-mr-sm tn-mb-sm tn-shadow-md">{{
+                            item
+                        }}</tn-tag>
+                </div>
             </div>
             <!-- 搜索结果 -->
             <div class="searchResult tn-pt-sm tn-pb-sm" v-show="kw">
@@ -210,4 +212,6 @@ function taphisto(params) {
         </div>
     </div>
 </template>
-<style lang='scss' scoped>@import './index.scss';</style>
+<style lang='scss' scoped>
+@import './index.scss';
+</style>

@@ -1,0 +1,144 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #EEF2F8;
+    overflow: auto;
+}
+
+
+.head {
+    padding-top: var(--status-bar-height);
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    .btn {
+        z-index: 99;
+        background-color: #fff;
+        width: 2em;
+        height: 2em;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(0.625rem);
+        margin: 0 10px;
+    }
+}
+
+.main {
+    padding: 0 10px;
+}
+
+.card {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    // background: url(background.jpg) no-repeat center center / cover;
+    border-radius: 10px;
+    // overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        filter: blur(8px);
+    }
+
+    .card-content {
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+        color: #fff;
+        margin-top: 80px;
+
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+            .username {
+                font-size: 16px;
+            }
+        }
+
+        .description {
+            font-size: 14px;
+        }
+    }
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-cover {
+    position: absolute;
+    bottom: -40px;
+    /* 负的 margin-bottom 值 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    // background: url(cover.jpg) no-repeat center center / cover;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 4;
+}
+
+.record {
+    z-index: 3;
+    position: absolute;
+    bottom: -40px;
+    left: 60%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+    background: black;
+    border-radius: 50%;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &::before {
+        width: 60px;
+        height: 60px;
+        background: #fff;
+        border-radius: 50%;
+    }
+
+    &::after {
+        width: 10px;
+        height: 10px;
+        background: red;
+        border-radius: 50%;
+    }
+}

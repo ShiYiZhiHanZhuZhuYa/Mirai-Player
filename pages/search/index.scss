@@ -10,10 +10,19 @@
 }
 
 // 最近搜索
-.Recentsearch {}
+.Recentsearch {
+    .rtsearch {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 10px;
+        backdrop-filter: blur(16px) saturate(180%);
+    }
+}
 
 // 搜索结果
-.searchResult {}
+.searchResult {
+    backdrop-filter: blur(16px) saturate(180%);
+}
 
 .List {
     .ListItem {

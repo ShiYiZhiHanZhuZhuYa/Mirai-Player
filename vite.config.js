@@ -6,12 +6,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 export default defineConfig(({ mode, command }) => {
   return {
     plugins: [
-      uni({
-        script: {
-          defineModel: true, // 开启defineModel功能
-          propsDestructure: true, // 开启props结构响应式
-        }
-      }),
+      uni(),
       AutoImport({
         include: [
           /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx

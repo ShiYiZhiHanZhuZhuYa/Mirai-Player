@@ -43,8 +43,7 @@ export default class Request {
                 this._queue.splice(this._queue.findIndex(item => item === options), 1)
                 if (this._queue.length === 0) uni.hideLoading()
             }
-            // 初始化地址
-            options.url = import.meta.env.VITE_API_URL + options.url
+           
             uni.request(options);
         })
     }

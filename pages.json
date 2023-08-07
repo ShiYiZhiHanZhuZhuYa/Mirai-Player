@@ -16,6 +16,9 @@
 		},
 		{
 			"path": "pages/login/index"
+		},
+		{
+			"path": "pages/playList/index"
 		}
 	],
 	"globalStyle": {
