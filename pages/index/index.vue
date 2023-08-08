@@ -88,9 +88,8 @@ function navigate(params, value) {
 
 
       <div class="btn-icon">
-        <div class="tn-flex-row tn-p tn-shadow-md yxbr-10"
-          style="justify-content: space-between;background-color: #F6F9FE;">
-          <div class="btn-icon-item tn-flex-column" v-for="item in btnList" :key="item.id">
+        <div class="grid tn-flex-row tn-p tn-shadow-md yxbr-10">
+          <div class="btn-icon-item tn-flex-column" v-for="item in btnList" :key="item.id" @click="navigate(item.url)">
             <tn-icon type="primary" :name="item.icon" size="35" />
             <text class="tn-mt-xs">
               {{ item.title }}
@@ -105,7 +104,7 @@ function navigate(params, value) {
           <div class="songlist-item" v-for="item in songList" :key="item.id">
             <div class="avatar">
               <div class="overlay">
-                <div class="box" @click="navigate('playList/index', item.id)">
+                <div class="box" @click="navigate('playListDetail/index', item.id)">
                   <div class="tn-flex tn-flex-column">
                     <text class="list-title tn-text-xs tn-text-ellipsis-2">{{ item.name }}</text>
                     <div class="tn-flex des">
@@ -116,7 +115,7 @@ function navigate(params, value) {
                   <tn-icon name="video-fill" color="#fff" size="45" />
                 </div>
               </div>
-              <tn-avatar @click="navigate('playList/index', item.id)" class="tn-shadow-md" shape="square" size="300"
+              <tn-avatar @click="navigate('playListDetail/index', item.id)" class="tn-shadow-md" shape="square" size="300"
                 :url="item.coverImgUrl + '?param=300y300'" />
             </div>
             <div class="info">

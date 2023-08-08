@@ -5,7 +5,8 @@
 			"^tn-(.*)": "@/uni_modules/tuniaoui-vue3/components/$1/src/$1.vue"
 		}
 	},
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/index/index"
 		},
 		{
@@ -18,7 +19,10 @@
 			"path": "pages/login/index"
 		},
 		{
-			"path": "pages/playList/index"
+			"path": "pages/playListDetail/index"
+		},
+		{
+			"path": "pages/songList/index"
 		}
 	],
 	"globalStyle": {
@@ -33,9 +37,10 @@
 		"selectedColor": "#ff7693",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/index/index",
-				 "text": "首页"
+				"text": "首页"
 			},
 			{
 				"pagePath": "pages/me/index",
@@ -44,5 +49,4 @@
 		]
 	},
 	"uniIdRouter": {}
-
 }

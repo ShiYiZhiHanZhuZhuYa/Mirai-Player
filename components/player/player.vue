@@ -17,25 +17,19 @@ const {
     duration,
 } = toRefs(state)
 onMounted(() => {
-    nextTick(() => {
+    nextTick(async () => {
         // 初始化播放器
         initPlayer()
         // 初始化动态封面颜色
-        getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
+        await getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
             playerstore.songs[playerstore.currentIndex].coverThemeColor = retRGBColor
         })
     })
+
 })
 
 const Emits = defineEmits(['leftClick'])
-watch(() => playerstore.currentIndex, () => {
-    // 设置动态封面颜色
-    if (!playerstore.songs[playerstore.currentIndex].coverThemeColor) {
-        getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
-            playerstore.songs[playerstore.currentIndex].coverThemeColor = retRGBColor
-        })
-    }
-})
+
 function initPlayer() {
     // 侦听时间变化
     playerstore.player.onTimeUpdate(() => {
@@ -50,6 +44,16 @@ function initPlayer() {
     playerstore.player.onPlay(() => {
         playerstore.isPlaying = true
         playerstore.animationPlayState = "running"
+
+        nextTick(() => {
+            // 设置动态封面颜色
+            if (!playerstore.songs[playerstore.currentIndex].coverThemeColor) {
+                getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
+                    playerstore.songs[playerstore.currentIndex].coverThemeColor = retRGBColor
+                })
+            }
+        })
+
         console.log("音频播放事件");
     })
 

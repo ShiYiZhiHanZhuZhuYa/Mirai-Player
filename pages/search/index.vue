@@ -146,21 +146,7 @@ function taphisto(params) {
                     <tn-tabs-item v-for="(item, index) in tabsData" :key="index" :title="item.text" />
                 </tn-tabs>
                 <!-- 歌曲 -->
-                <div class="List tn-mt-xs" v-show="currentTabIndex == 0">
-                    <div class="ListItem tn-mb tn-mt" v-for="item in songData" :key="item.id" @click="playerMusic(item)">
-                        <div class="songcover">
-                            <tn-avatar shape="square" :url="item.cover + '?param=60y60'" />
-                        </div>
-                        <div class="title tn-mr-xs tn-ml-xs">
-                            <text class="tn-text-lg tn-text-ellipsis-1">{{ item.title }}</text>
-                            <text class="tn-text-xs des tn-text-ellipsis-1">{{ item.album }}</text>
-                        </div>
-                        <div>
-                            <tn-icon name="video" size="40" class="des tn-mr-sm" />
-                            <tn-icon name="more-horizontal" size="40" class="des" />
-                        </div>
-                    </div>
-                </div>
+                <yxcr-table :data="songData" v-show="currentTabIndex == 0"></yxcr-table>
                 <!-- 歌单 -->
                 <div class="List tn-mt-xs" v-show="currentTabIndex == 1">
                     <div class="ListItem tn-mb-sm" v-for="item in songList" :key="item.id" @click="playerMusic(item)">

@@ -35,9 +35,8 @@
     position: relative;
     width: 100%;
     height: 300px;
-    // background: url(background.jpg) no-repeat center center / cover;
-    border-radius: 10px;
-    // overflow: hidden;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     background-repeat: no-repeat;
     background-size: cover;
 
@@ -87,58 +86,41 @@
     }
 }
 
-.footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.card-cover {
-    position: absolute;
-    bottom: -40px;
-    /* 负的 margin-bottom 值 */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 80px;
-    // background: url(cover.jpg) no-repeat center center / cover;
-    border-radius: 10px;
-    border: 2px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 4;
-}
-
-.record {
-    z-index: 3;
-    position: absolute;
-    bottom: -40px;
-    left: 60%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 100px;
-    background: black;
-    border-radius: 50%;
-
-    &::before,
-    &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+.play {
+    &-all {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        justify-content: space-between;
     }
 
-    &::before {
-        width: 60px;
-        height: 60px;
-        background: #fff;
+    &-item {
+        display: flex;
+        align-items: center;
+    }
+
+    &-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #FF5353;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
+        margin-right: 10px;
     }
 
-    &::after {
-        width: 10px;
-        height: 10px;
-        background: red;
+    &-text {
+        font-size: var(--font-size-md);
+    }
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
     }
 }

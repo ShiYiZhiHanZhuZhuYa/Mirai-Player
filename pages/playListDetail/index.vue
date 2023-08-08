@@ -56,14 +56,24 @@ function gtback() {
                     {{ playlists.description }}
                 </p>
             </div>
-            <div class="footer">
-                <div class="card-cover" :style="{ backgroundImage: `url(${playlists.coverImgUrl + '?param=80y80'})` }">
-                </div>
-                <div class="record"></div>
-            </div>
-
         </div>
         <div class="main">
+            <div class="play-all">
+                <div class="play-item">
+                    <div class="play-icon">
+                        <tn-icon size="20" color="#fff" name="play" />
+                    </div>
+                    <div class="play-text">播放全部</div>
+                </div>
+                <div class="play-item">
+                    <div class="icon tn-mr-xs">
+                        <tn-icon size="20" name="audio" />
+                    </div>
+                    <div class="icon">
+                        <tn-icon size="20" name="align" />
+                    </div>
+                </div>
+            </div>
             <yxcr-table :data="list"></yxcr-table>
         </div>
     </div>

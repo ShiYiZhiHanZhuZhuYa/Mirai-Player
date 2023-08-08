@@ -12,7 +12,8 @@ export const btnList = [
     {
         id: 3,
         icon: "sing",
-        title: "歌单"
+        title: "歌单",
+        url:"songList/index"
     },
     {
         id: 4,

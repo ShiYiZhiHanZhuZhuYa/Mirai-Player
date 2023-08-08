@@ -64,6 +64,13 @@
   }
 }
 
+.grid {
+  backdrop-filter: blur(0.625rem);
+  justify-content: space-between;
+  background-color: #F6F9FE;
+  opacity: 0.8;
+}
+
 .songlist {
   margin-top: 25px;
 
