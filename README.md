@@ -36,16 +36,12 @@ GitHub：https://github.com/XiangZi7/Kuriyama-Mirai-Player
   `yarn dev`
 * 文档说明
   https://neteasecloudmusicapi.vercel.app/#/  （可能需魔法上网）
-### 项目运行和打包 👀
+### 项目运行和打包 ⌚
 * 第一步将vite项目进行打包，在项目目录终端中执行
    `npm run build`然后我们看到打包好的dist文件
 * 去终端中执行 注意：我们要在生成的dist目录中执行
   `npm install electron` 安装electron
 * 再在这个目录下创建两个文件 分别是main.js和package.json
-
-
-
-
 main.js
 ```
 const {app, BrowserWindow} =require('electron');//引入electron
@@ -75,12 +71,13 @@ app.on('activate',() => {
     createWindow();
   }
 });
-
+```
+release 2.0 更新了无边框和拖动 🌝 ，修改了个别BUG
 
 
 
 package.json
-
+```
 {
     "name": "demo",
     "author": "作者",
