@@ -1,3 +1,4 @@
+import { http } from "./index";
 // 获取歌曲地址
 export const songUrl = (params) => uni.$kmir.http.request({
     url: `song/url/v1?id=${params.id}&level=exhigh`
@@ -15,7 +16,7 @@ export const cloudsearch = (data) => uni.$kmir.http.request({
 export const newMusic = () => uni.$kmir.http.request({
     url: `personalized/newsong`
 });
-// songPlaylist图
+// songPlaylist
 export const songPlaylist = (data) => uni.$kmir.http.request({
     url: `top/playlist`,
     data
@@ -65,6 +66,36 @@ export const logout = () => uni.$kmir.http.request({
 // 歌单详情
 export const playListDetail = (data) => uni.$kmir.http.request({
     url: `playlist/detail`,
+    data
+});
+// 歌单tag
+export const catlist = () => uni.$kmir.http.request({
+    url: `playlist/catlist`,
+});
+// 歌词tag
+export const lyric = (id) => uni.$kmir.http.request({
+    url: `lyric?id=${id}`,
+});
+// 歌曲评论
+export const commentMusic = (data) => http.request({
+    url: `comment/music`,
+    data
+});
+// // 最新mv
+export const newMV = () => http.request({
+    url: `mv/first`,
+});
+// mvUrl
+export const mvUrl = (id) => http.request({
+    url: `mv/url?id=${id}`,
+});
+// mvDetail
+export const mvDetail = (id) => http.request({
+    url: `mv/detail?mvid=${id}`,
+});
+// 获取MV评论
+export const commentMV = (data) => http.request({
+    url: `comment/mv`,
     data
 });
 

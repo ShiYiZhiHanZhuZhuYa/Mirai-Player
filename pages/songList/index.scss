@@ -34,14 +34,15 @@
     justify-content: center;
     text-align: center;
     border-radius: 8px;
-    // padding: 10px;
     margin: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #fff;
+    backdrop-filter: blur(10px);
 }
 
 .song-card {
     position: relative;
+    width: 100%;
 }
 
 .play-count {
@@ -64,22 +65,10 @@
 }
 
 .song-title {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
     margin-bottom: 5px;
 }
 
 .song-artist {
-    font-size: 14px;
-    color: #666;
-}
-
-.image-data {
-    width: calc(100% - 20rpx);
-    margin: 10rpx;
-
-    .image {
-        width: 100%;
-        height: auto;
-    }
+    margin-right: 5px;
 }

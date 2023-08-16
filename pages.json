@@ -23,6 +23,12 @@
 		},
 		{
 			"path": "pages/songList/index"
+		},
+		{
+			"path": "pages/mv/index"
+		},
+		{
+			"path": "pages/mv/play"
 		}
 	],
 	"globalStyle": {

@@ -1,6 +1,5 @@
 <script setup>
 import { playListDetail } from "@/api/api";
-import imageUrl from "@/static/sc1.png";
 const state = reactive({
     list: [],
     router: {},

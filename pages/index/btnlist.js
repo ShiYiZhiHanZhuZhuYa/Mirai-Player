@@ -23,6 +23,7 @@ export const btnList = [
     {
         id: 5,
         icon: "video-square",
-        title: "视频"
+        title: "视频",
+        url:"mv/index"
     },
 ]

@@ -1,26 +1,63 @@
 <script setup>
+import { songPlaylist, catlist } from "@/api/api";
+import { formatNumber } from "@/src/utils/formatTime";
 const state = reactive({
-    songList: [
-        { playCount: 555, title: "栗山未来", sum: 50, cover: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F9495b6a9-acef-4749-b0d1-bd41b56ac2ff%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1694075938&t=6631cb8c488699ce113b5e7ff52d2b74" },
-        { playCount: 5655, title: "栗山未来", sum: 67, cover: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F9495b6a9-acef-4749-b0d1-bd41b56ac2ff%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1694075938&t=6631cb8c488699ce113b5e7ff52d2b74" },
-    ],
-    currentTabIndex: 0
-})
-const {
-    songList,
-    currentTabIndex
-} = toRefs(state)
-const tabsData = [
-    { text: "推荐" },
-    { text: "电子" },
-    { text: "华语" },
-    { text: "粤语" },
-]
-function gtback() {
-    uni.navigateBack()
-}
-function tabsChange(params) {
+    songList: [],
+    currentTabIndex: 0,
+    pageNo: 1,
+    isLoading: false,
+    tabsData: []
+});
 
+const { songList, currentTabIndex, tabsData } = toRefs(state);
+
+
+
+function gtback() {
+    uni.navigateBack();
+}
+
+onLoad(async () => {
+    catlist().then(({ data }) => {
+        state.tabsData = data.sub
+        state.tabsData.unshift(data.all)
+        queryList();
+    })
+
+});
+// 底部时自动下一页
+function lowerBottom(params) {
+    if (params.detail.direction != 'bottom') return
+    queryList()
+}
+// 数据加载
+async function queryList(cat) {
+    if (state.isLoading) return;
+
+    state.isLoading = true;
+    try {
+        const offset = (state.pageNo - 1) * 30;
+        songPlaylist({ limit: 30, offset, cat }).then(res => {
+            state.songList = state.songList.concat(res.data.playlists);
+            state.pageNo++;
+        })
+
+    } catch (error) {
+        console.error("Failed to load data:", error);
+    } finally {
+        state.isLoading = false;
+    }
+}
+// tabs发生改变
+function tabsChange(idx) {
+    state.songList = []
+    queryList(state.tabsData[idx].name)
+}
+
+function navigate(params, value) {
+    uni.navigateTo({
+        url: "/pages/" + params + (value ? "?id=" + value : "")
+    });
 }
 </script>
 <template>
@@ -34,52 +71,41 @@ function tabsChange(params) {
             </div>
         </div>
         <tn-tabs @change="tabsChange" bg-color="" v-model="currentTabIndex" class="yxbr-10 tn-mt-sm tn-mb-sm">
-            <tn-tabs-item v-for="(item, index) in tabsData" :key="index" :title="item.text" />
+            <tn-tabs-item v-for="(item, index) in tabsData" :key="index" :title="item.name" />
         </tn-tabs>
-        <!-- <div class="song-list"> -->
-        <tn-water-fall :data="songList">
-            <template #left="{ item }">
-                <div class="song-item">
-                    <div class="song-card">
-                        <div class="play-count">
-                            <tn-icon name="play" />
-                            {{ item.playCount }}w
+
+        <scroll-view @scrolltolower="lowerBottom" style="height:90vh;" scroll-y="true">
+            <tn-water-fall :data="songList">
+                <template #left="{ item }">
+                    <div class="song-item" @click="navigate('playListDetail/index', item.id)">
+                        <div class="song-card">
+                            <div class="play-count">
+                                <tn-icon name="play" />
+                                {{ formatNumber(item.playCount) }}
+                            </div>
+                            <img class="song-cover" :src="item.coverImgUrl + '?param=200y200'" alt="封面" />
                         </div>
-                        <img class="song-cover" :src="item.cover" alt="封面" />
-                    </div>
-                    <div class="song-info">
-                        <p class="song-title">{{ item.title }}</p>
-                        <p class="song-artist">{{ item.artist }}</p>
-                    </div>
-                </div>
-            </template>
-            <template #right="{ item }">
-                <div class="song-item">
-                    <div class="song-card">
-                        <div class="play-count">
-                            <tn-icon name="play" />
-                            {{ item.playCount }}w
+                        <div class="song-info">
+                            <p class="song-title">{{ item.name }}</p>
                         </div>
-                        <img class="song-cover" :src="item.cover" alt="封面" />
                     </div>
-                    <div class="song-info">
-                        <p class="song-title">{{ item.title }}</p>
-                        <p class="song-artist">{{ item.artist }}</p>
+                </template>
+                <template #right="{ item }">
+                    <div class="song-item" @click="navigate('playListDetail/index', item.id)">
+                        <div class="song-card">
+                            <div class="play-count">
+                                <tn-icon name="play" />
+                                {{ formatNumber(item.playCount) }}
+                            </div>
+                            <img class="song-cover" :src="item.coverImgUrl + '?param=200y200'" alt="封面" />
+                        </div>
+                        <div class="song-info">
+                            <p class="song-title">{{ item.name }}</p>
+                        </div>
                     </div>
-                </div>
-            </template>
-        </tn-water-fall>
-        <!-- <div class="song-item" v-for="song in songList" :key="song.id">
-                <div class="song-card">
-                    <div class="play-count">{{ song.playCount }}</div>
-                    <img class="song-cover" :src="song.cover" alt="封面" />
-                </div>
-                <div class="song-info">
-                    <p class="song-title">{{ song.title }}</p>
-                    <p class="song-artist">{{ song.artist }}</p>
-                </div>
-            </div> -->
-        <!-- </div> -->
+                </template>
+            </tn-water-fall>
+        </scroll-view>
     </div>
 </template>
 <style lang='scss' scoped>

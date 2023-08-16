@@ -1,6 +1,8 @@
 <script setup>
 import { PlayerStore } from "@/stores/modules/player";
 import { getImageThemeColor } from "@/src/utils/ThemeColor";
+import { lyric } from "@/api/api";
+import comments from "./comments.vue";
 const playerstore = PlayerStore()
 const state = reactive({
     list: [],
@@ -8,6 +10,12 @@ const state = reactive({
     progress: 0,
     currentTime: 0,
     duration: 0,
+    lyrics: [],
+
+    // 歌词属性：
+    height: 0,
+    top: 0,
+    currentLine: -1
 })
 const {
     list,
@@ -15,13 +23,19 @@ const {
     progress,
     currentTime,
     duration,
+    lyrics,
+    height,
+    top,
+    currentLine
 } = toRefs(state)
 onMounted(() => {
+    // 获取歌词
+    getLyric()
     nextTick(async () => {
         // 初始化播放器
         initPlayer()
         // 初始化动态封面颜色
-        await getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
+        getImageThemeColor(playerstore.songs[playerstore.currentIndex].cover, "getImageThemeColorCanvas", (retRGBColor) => {
             playerstore.songs[playerstore.currentIndex].coverThemeColor = retRGBColor
         })
     })
@@ -29,7 +43,17 @@ onMounted(() => {
 })
 
 const Emits = defineEmits(['leftClick'])
+function getLyric() {
+    if (playerstore.songs[playerstore.currentIndex].Lyric) {
+        state.lyrics = parseLyrics(playerstore.songs[playerstore.currentIndex].Lyric)
+    } else {
+        lyric(playerstore.songs[playerstore.currentIndex].id).then(res => {
+            playerstore.songs[playerstore.currentIndex].Lyric = res.data.lrc.lyric
+            state.lyrics = parseLyrics(playerstore.songs[playerstore.currentIndex].Lyric)
+        })
+    }
 
+}
 function initPlayer() {
     // 侦听时间变化
     playerstore.player.onTimeUpdate(() => {
@@ -39,6 +63,18 @@ function initPlayer() {
         state.currentTime = Math.floor(playerstore.player.currentTime)
         // 当前播放歌曲的总时长
         state.duration = Math.floor(playerstore.player.duration)
+
+        //
+        for (let i = 0; i < state.lyrics.length; i++) {
+            if (i === state.lyrics.length - 1 || state.currentTime < state.lyrics[i + 1].time) {
+                var newi = i - 1;
+                state.currentLine = i
+                state.top = (newi * -30) + 100 + "rpx";
+                var height = 50 - newi * 30
+                state.height = height
+                break
+            }
+        }
     });
     // 侦听播放状态
     playerstore.player.onPlay(() => {
@@ -53,7 +89,7 @@ function initPlayer() {
                 })
             }
         })
-
+        getLyric()
         console.log("音频播放事件");
     })
 
@@ -71,6 +107,24 @@ function initPlayer() {
     // 默认选择第一首歌曲
     playerstore.player.src = playerstore.songs[playerstore.currentIndex].src
 }
+
+// 解析歌词
+const parseLyrics = (lyric) => {
+    if (!lyric) return
+    const lines = lyric.split('\n')
+    return lines.map(line => {
+        const matches = line.match(/^\[(\d{2}):(\d{2}\.\d{2,3})\](.*)/)
+        if (matches) {
+            const minutes = parseInt(matches[1])
+            const seconds = parseFloat(matches[2])
+            const text = matches[3].trim()
+            return { time: minutes * 60 + seconds, text }
+        } else {
+            return null
+        }
+    }).filter(line => line !== null)
+}
+
 // 播放方法
 function play() {
     playerstore.isPlaying = true
@@ -104,6 +158,7 @@ function playNext() {
     playerstore.player.src = playerstore.songs[playerstore.currentIndex].src;
     nextTick(() => {
         playerstore.player.play();
+
     })
 }
 // 上一首
@@ -167,16 +222,16 @@ function leftClick() {
             </div>
         </div>
         <!-- 歌词 -->
-        <!-- <div class="lyrics-container">
-            <ul>
-                <li v-for="(line, index) in parsedLyrics" :key="index" :class="{ active: currentLine === index }">
-                    {{ line.text }}
-                </li>
-            </ul>
-        </div> -->
+        <div class="lyrics-container">
+            <div class="other" :style="{ 'transform': 'translateY(' + height + 'px)' }"
+                :class="{ active: index == currentLine }" v-for="(item, index) in lyrics" :key="index"
+                style="text-align: center;">
+                {{ item.text }}
+            </div>
+        </div>
         <!-- 操作栏 -->
         <div class="tabbar">
-            <view class="tn-p-lg">
+            <div class="tn-p-lg">
                 <tn-slider @change="changeProgress" v-model="progress" :min="0" :max="100" />
                 <div class="time des">
                     <text>{{ formatTime(currentTime) }}</text>
@@ -194,12 +249,10 @@ function leftClick() {
                     </div>
 
                 </div>
-            </view>
+            </div>
             <div class="review">
                 <tn-icon size="45" name="menu" />
-                <div class="des">
-                    <text>0评论 </text><tn-icon class="tn-ml-xs" size="20" name="up-double" />
-                </div>
+                <comments :id="playerstore.songs[playerstore.currentIndex].id"></comments>
                 <tn-icon size="45" name="align" />
             </div>
         </div>

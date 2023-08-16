@@ -9,3 +9,13 @@ export const formatTime = (songdt) => {
 	}
 	return min + ":" + sec;
 }
+
+export function formatNumber(number) {
+	if (number >= 10000 && number < 100000) {
+		return (number / 10000).toFixed(0) + 'W';
+	} else if (number >= 100000) {
+		return (number / 10000).toFixed(0) + 'W';
+	} else {
+		return number.toString();
+	}
+}

@@ -19,7 +19,8 @@ export const PlayerStore = defineStore({
         // 播放状态
         isPlaying: false,
         // 封面动画状态
-        animationPlayState: "paused"
+        animationPlayState: "paused",
+        currentLyricIndex: -1, // 当前高亮显示的歌词索引
     }),
 
     actions: {

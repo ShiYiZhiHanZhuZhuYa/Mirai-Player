@@ -1,5 +1,5 @@
 <script setup>
-import { anonimous, cellphone } from "@/api/api";
+import { anonimous, cellphone, captcha, verify } from "@/api/api";
 const formRef = ref()
 // 规则
 const formRules = {
@@ -21,7 +21,6 @@ const formRules = {
 const state = reactive({
     list: [],
     model: {},
-
 })
 const {
     list,
@@ -43,6 +42,12 @@ async function anonimousFn() {
 async function fnLogin() {
     formRef.value?.validate(async (valid) => {
         if (valid) {
+            // 因接口要验证、暂时实现不了登录功能
+            // verify(state.model).then(({ data }) => {
+            //     if (data.data) {
+            //         cellphone(state.model)
+            //     }
+            // })
             uni.showToast({
                 title: '表单成功',
                 icon: 'none',
@@ -56,7 +61,9 @@ async function fnLogin() {
     })
 
 }
-
+function sent() {
+    captcha({ phone: state.model.phone })
+}
 </script>
 <template>
     <div class="container">
@@ -81,7 +88,7 @@ async function fnLogin() {
                 <div class="inputContainer">
                     <tn-icon name="lock" class="inputIcon" />
                     <input placeholder="Verification code" v-model="model.captcha" class="inputField" type="number">
-                    <tn-button class="tn-ml-xs" shape="round" size="lg" shadow type="success">Send</tn-button>
+                    <tn-button class="tn-ml-xs" shape="round" size="lg" shadow type="success" @click="sent">Send</tn-button>
                 </div>
             </tn-form-item>
             <tn-button class="tnbutton" shape="round" size="lg" shadow type="primary" @click="fnLogin">Login</tn-button>

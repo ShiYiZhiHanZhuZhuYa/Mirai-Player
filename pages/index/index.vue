@@ -4,7 +4,6 @@ import { banner, newMusic, songPlaylist } from "@/api/api";
 import { btnList } from "./btnlist";
 const state = reactive({
   list: [],
-  msg: "123456",
   currentSwiperIndex: 0,
   // 轮播图数据
   bannerList: [],
@@ -15,7 +14,6 @@ const state = reactive({
 })
 const {
   list,
-  msg,
   currentSwiperIndex,
   bannerList,
   popMusic,
@@ -23,35 +21,36 @@ const {
 } = toRefs(state)
 
 onMounted(async () => {
-  const { data } = await banner()
-  const newMs = await newMusic();
-  const songList = await songPlaylist({ limit: 30, offset: 0 });
-  state.bannerList = data.banners
-  state.popMusic = newMs.data.result.map(item => {
-    const names = item.song.artists.map(subItem => subItem.name).join(',');
-    return {
-      cover: item.picUrl,
-      title: item.name,
-      singer: names,
-      album: item.song.album.name,
-      time: item.song.duration,
-      id: item.id,
-      mv: item.song.mvid
-    }
-  })
-  state.songList = songList.data.playlists
+  try {
+    const [bannerResult, newMusicResult, songListResult] = await Promise.all([
+      banner(),
+      newMusic(),
+      songPlaylist({ limit: 30, offset: 0 })
+    ]);
+    state.bannerList = bannerResult.data.banners;
+
+    state.popMusic = newMusicResult.data.result.map(item => {
+      const names = item.song.artists.map(subItem => subItem.name).join(',');
+      return {
+        cover: item.picUrl,
+        title: item.name,
+        singer: names,
+        album: item.song.album.name,
+        time: item.song.duration,
+        id: item.id,
+        mv: item.song.mvid
+      };
+    });
+
+    state.songList = songListResult.data.playlists;
+  } catch (error) {
+    console.error("Failed to load data:", error);
+  }
 })
 function navigate(params, value) {
-  if (value) {
-    uni.navigateTo({
-      url: "/pages/" + params + '?id=' + value
-    })
-  } else {
-    uni.navigateTo({
-      url: "/pages/" + params
-    })
-  }
-
+  uni.navigateTo({
+    url: "/pages/" + params + (value ? "?id=" + value : "")
+  });
 }
 </script>
 <template>
@@ -117,9 +116,6 @@ function navigate(params, value) {
               </div>
               <tn-avatar @click="navigate('playListDetail/index', item.id)" class="tn-shadow-md" shape="square" size="300"
                 :url="item.coverImgUrl + '?param=300y300'" />
-            </div>
-            <div class="info">
-
             </div>
           </div>
         </div>
